@@ -14,8 +14,8 @@ def validate(json_input: dict):
     pass
 
 
-class BatchApi(viewsets.ReadOnlyModelViewSet):
-    queryset = m.Batch.objects.all()
+class JournalHeadApi(viewsets.ReadOnlyModelViewSet):
+    queryset = m.JournalHead.objects.all()
 
     @decorators.action(['POST'])
     def record(self, request: Request):
@@ -25,8 +25,8 @@ class BatchApi(viewsets.ReadOnlyModelViewSet):
 
             {
                 company_id: '',
-                batch_name: '',
-                batch_memo: '',
+                name: '',
+                memo: '',
                 journals: {[{
                     coa_id: '',
                     department_id: '',
@@ -46,14 +46,14 @@ class BatchApi(viewsets.ReadOnlyModelViewSet):
 
         user: User = request.user
         company_id = json_input['company_id'] or user.userext.company_id
-        batch_name = json_input['batch_name'] or m.Batch.default_batch_name()
-        batch_memo = json_input['batch_memo']
-        batch = m.Batch(company_id=company_id, batch_name=batch_name, batch_memo=batch_memo)
+        name = json_input['name'] or m.JournalHead.default_name()
+        memo = json_input['memo']
+        head = m.JournalHead(company_id=company_id, name=name, memo=memo)
         journals = json_input['journals']
         journal_objs = list()
         for j in journals:
             journal_objs.append(m.Journal(
-                batch=batch,
+                head=head,
                 coa_id=j['coa_id'],
                 department_id=j['department_id'],
                 project_id=j['project_id'],
@@ -61,5 +61,5 @@ class BatchApi(viewsets.ReadOnlyModelViewSet):
                 amount=j['amount'],
                 memo=j['memo']
             ))
-        core.record(user, batch, journal_objs)
+        core.record(user, head, journal_objs)
         return Response({'code': 0, 'msg': '日记账保存成功'})

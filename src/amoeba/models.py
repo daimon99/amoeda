@@ -81,8 +81,8 @@ class UserExt(models.Model):
                                    related_name='userext_coa_credits_set')
 
 
-class Batch(TimeStampedModel):
-    """日记批"""
+class JournalHead(TimeStampedModel):
+    """日记头信息"""
 
     def __str__(self):
         return f'{self.name}'
@@ -93,7 +93,7 @@ class Batch(TimeStampedModel):
     memo = models.TextField(verbose_name='备注', blank=True, null=True)
 
     @classmethod
-    def default_batch_name(cls):
+    def default_name(cls):
         return now().strftime('%Y%m%d%H%M')
 
 
@@ -103,10 +103,11 @@ class Journal(models.Model):
     def __str__(self):
         return f'{self.id}'
 
-    batch = models.ForeignKey(Batch, on_delete=models.Model, verbose_name='批次')
+    head = models.ForeignKey(JournalHead, on_delete=models.Model, verbose_name='日记账头')
     coa = models.ForeignKey(Coa, verbose_name='科目', on_delete=models.CASCADE)
     department = models.ForeignKey(Department, verbose_name='部门', blank=True, null=True, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, verbose_name='项目', blank=True, null=True, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, verbose_name='产品', blank=True, null=True, on_delete=models.CASCADE)
-    amount = models.DecimalField(verbose_name='金额', help_text='正数为借，负数为贷', max_digits=15, decimal_places=2)
+    amount_dr = models.DecimalField(verbose_name='借方金额', help_text='借方金额', max_digits=15, decimal_places=2)
+    amount_cr = models.DecimalField(verbose_name='贷方金额', help_text='贷方金额', max_digits=15, decimal_places=2)
     memo = models.TextField(verbose_name='备注', blank=True, null=True)

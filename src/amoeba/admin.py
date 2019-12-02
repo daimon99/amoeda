@@ -59,8 +59,8 @@ class CoaAdmin(admin.ModelAdmin):
     ordering = ('code', )
 
 
-@admin.register(m.Batch)
-class BatchAdmin(admin.ModelAdmin):
+@admin.register(m.JournalHead)
+class JournalHeadAdmin(admin.ModelAdmin):
     list_display = ('id', 'name',)
     # list_select_related = ('task', )
     # autocomplete_fields = ('project', 'task')
