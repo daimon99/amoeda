@@ -1,0 +1,37 @@
+--index-url=http://mirrors.cloud.tencent.com/pypi/simple
+--extra-index-url http://tjhb@pypi.taijihuabao.com/
+--trusted-host pypi.taijihuabao.com
+
+click
+coreapi
+
+django>=2.0.0,<2.2
+djangorestframework>=3.8.2
+djangorestframework-jwt
+
+django-cors-headers
+django-debug-toolbar
+django-extensions
+django-filter
+django-openauth
+django-kronos
+
+gunicorn[gevent]
+
+ipython
+
+markdown
+
+psycopg2-binary
+
+pygments
+pytelegraf
+pytest
+pytest-django
+pyyaml
+
+raven
+
+whitenoise
+
+# 私有库包
